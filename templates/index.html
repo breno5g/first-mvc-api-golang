@@ -52,9 +52,9 @@
                 <td class="table-data">{{ .Price }}</td>
                 <td class="table-data">{{ .Quantity }}</td>
                 <td class="table-data">
-                  <a href="/delete-product?id={{ .Id }}"
-                    ><i class="fa-solid fa-trash-can" style="color: #000"></i
-                  ></a>
+                  <button onclick="onDelete('{{ .Id }}')">
+                    <i class="fa-solid fa-trash-can" style="color: #000"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -64,6 +64,7 @@
       </section>
       <a href="/new-product" class="btn-primary">Create new Product</a>
     </div>
+    <script src="/static/js/index.js"></script>
   </body>
 </html>
 {{end}}
