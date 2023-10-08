@@ -7,6 +7,9 @@ import (
 )
 
 func LoadRoutes() {
-	http.HandleFunc("/", controller.IndexHandler)
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	http.HandleFunc("/", controller.IndexHandler)
+	http.HandleFunc("/new-product", controller.NewProductHandler)
 }

@@ -8,12 +8,9 @@ import (
 	_ "github.com/lib/pq"
 )
 
-
 func main() {
 	routes.LoadRoutes()
 
 	fmt.Println("Server is runing on port 3001")
 	http.ListenAndServe(":3001", nil)
 }
-
-

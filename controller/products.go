@@ -14,3 +14,7 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 
 	templates.ExecuteTemplate(res, "Index", products)
 }
+
+func NewProductHandler(res http.ResponseWriter, req *http.Request) {
+	templates.ExecuteTemplate(res, "New-Product", nil)
+}
