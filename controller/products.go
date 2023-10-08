@@ -42,5 +42,19 @@ func CreateProductHandler(res http.ResponseWriter, req *http.Request) {
 		model.CreateNewProduct(name, convertedPrice, description, convertedQuantity)
 	}
 
-	http.Redirect(res, req, "/", 301)
+	http.Redirect(res, req, "/", http.StatusMovedPermanently)
+}
+
+func DeleteProductHandler(res http.ResponseWriter, req *http.Request) {
+	id := req.URL.Query().Get("id")
+
+	convertedId, err := strconv.Atoi(id)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	model.DeleteProduct(convertedId)
+
+	http.Redirect(res, req, "/", http.StatusMovedPermanently)
 }

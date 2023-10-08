@@ -45,6 +45,17 @@ func CreateNewProduct(name string, price float64, description string, quantity i
 	}
 
 	insertProduct.Exec(name, price, description, quantity)
-	defer insertProduct.Close()
+}
+
+func DeleteProduct(id int) {
+	db := infra.ConnectWithDatabase()
 	defer db.Close()
+
+	deleteProduct, err := db.Prepare("DELETE FROM products WHERE id=$1")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	deleteProduct.Exec(id)
 }
