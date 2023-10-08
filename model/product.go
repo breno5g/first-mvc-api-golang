@@ -34,6 +34,28 @@ func GetAllProducts() []Product {
 	return products
 }
 
+func GetProductById(id int) Product {
+	db := infra.ConnectWithDatabase()
+	defer db.Close()
+
+	productSelect, err := db.Query("SELECT * FROM products WHERE id=$1", id)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var product Product
+
+	for productSelect.Next() {
+		err = productSelect.Scan(&product.Id, &product.Name, &product.Description, &product.Price, &product.Quantity)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return product
+}
+
 func CreateNewProduct(name string, price float64, description string, quantity int) {
 	db := infra.ConnectWithDatabase()
 	defer db.Close()
@@ -58,4 +80,17 @@ func DeleteProduct(id int) {
 	}
 
 	deleteProduct.Exec(id)
+}
+
+func UpdateProduct(id int, name string, price float64, description string, quantity int) {
+	db := infra.ConnectWithDatabase()
+	defer db.Close()
+
+	updateProduct, err := db.Prepare("UPDATE products SET name=$1, price=$2, description=$3, quantity=$4 WHERE id=$5")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	updateProduct.Exec(name, price, description, quantity, id)
 }

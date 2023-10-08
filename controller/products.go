@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -55,6 +56,54 @@ func DeleteProductHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	model.DeleteProduct(convertedId)
+
+	http.Redirect(res, req, "/", http.StatusMovedPermanently)
+}
+
+func EditProductHandler(res http.ResponseWriter, req *http.Request) {
+	id := req.URL.Query().Get("id")
+
+	convertedId, err := strconv.Atoi(id)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	product := model.GetProductById(convertedId)
+
+	templates.ExecuteTemplate(res, "Edit-Product", product)
+}
+
+func UpdateProductHandler(res http.ResponseWriter, req *http.Request) {
+	if req.Method == "POST" {
+		fmt.Println("UPDATE")
+
+		id := req.FormValue("id")
+		name := req.FormValue("name")
+		price := req.FormValue("price")
+		description := req.FormValue("description")
+		quantity := req.FormValue("quantity")
+
+		convertedId, err := strconv.Atoi(id)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		convertedPrice, err := strconv.ParseFloat(price, 64)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		convertedQuantity, err := strconv.Atoi(quantity)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		model.UpdateProduct(convertedId, name, convertedPrice, description, convertedQuantity)
+	}
 
 	http.Redirect(res, req, "/", http.StatusMovedPermanently)
 }

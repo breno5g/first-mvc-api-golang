@@ -25,6 +25,11 @@
                 <td class="table-data">{{ .Price }}</td>
                 <td class="table-data">{{ .Quantity }}</td>
                 <td class="table-data">
+                  <a href="/edit-product?id={{ .Id }}">
+                    <i class="fa-solid fa-edit" style="color: #000"></i>
+                  </a>
+                </td>
+                <td class="table-data">
                   <button onclick="onDelete('{{ .Id }}')">
                     <i class="fa-solid fa-trash-can" style="color: #000"></i>
                   </button>
